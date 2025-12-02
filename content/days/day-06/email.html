@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS Advent Calendar - Ημέρα 6</title>
+</head>
+<body style="margin:0; padding:0; background-color:#1a1a2e; font-family: Arial, sans-serif;">
+  <!-- Preheader -->
+  <div style="display:none; max-height:0; overflow:hidden;">
+    Αποφύγε ακυρώσεις και δυσαρεστημένους πελάτες
+  </div>
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a2e;">
+    <tr>
+      <td align="center" style="padding:20px;">
+        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:16px;">
+
+          <!-- Header with Day Number -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #a33188 0%, #4a92c9 100%); padding:30px; text-align:center; border-radius:16px 16px 0 0;">
+              <h1 style="color:#ffd700; margin:0; font-size:24px;">🎄 Ημέρα 6 / 24</h1>
+              <p style="color:#ffffff; margin:10px 0 0;">OBS Advent Calendar 2024</p>
+            </td>
+          </tr>
+
+          <!-- Main Content -->
+          <tr>
+            <td style="padding:40px;">
+              <h2 style="color:#a33188; margin:0 0 20px;">Auto-hide όταν τελειώνει το stock</h2>
+              <p style="color:#333; line-height:1.6;">Το χειρότερο customer experience δεν είναι η έλλειψη αποθέματος - είναι να αποδεχτείς μια παραγγελία και να την ακυρώσεις την επόμενη μέρα επειδή δεν έχεις stock. Κάθε τέτοια ακύρωση σε κοστίζει στο Skroutz ranking, στα Google reviews, και στην εμπιστοσύνη του πελάτη.</p>
+
+              <p style="color:#333; line-height:1.6;">Η λύση είναι η αυτόματη απόκρυψη προϊόντων πριν το stock φτάσει στο μηδέν. Ορίζεις ένα "safety threshold" - για παράδειγμα, 3 τεμάχια - και το σύστημα αυτόματα κρύβει το προϊόν από το site και τα marketplaces όταν το απόθεμα πέσει κάτω από αυτό το όριο. Έτσι έχεις buffer για pending παραγγελίες και unexpected ζήτηση.</p>
+
+              <p style="color:#333; line-height:1.6;">Το automation rule είναι απλό αλλά πανίσχυρο: Παρακολουθεί το stock level σε real-time, συγκρίνει με το threshold που έχεις ορίσει, και αν χρειαστεί, αλλάζει το visibility status του προϊόντος αυτόματα. Παράλληλα, σου στέλνει notification ώστε να προχωρήσεις σε νέα παραγγελία από προμηθευτή.</p>
+
+              <p style="color:#333; line-height:1.6;">Το αποτέλεσμα είναι zero ακυρώσεις λόγω stock-out, καλύτερο marketplace rating, και customers που λαμβάνουν πάντα αυτό που παράγγειλαν. Επίσης, αποφεύγεις το στρες του χειροκίνητου ελέγχου αποθέματος για κάθε παραγγελία.</p>
+
+              <!-- 3 Implementation Steps -->
+              <div style="background:#f5f5f5; padding:20px; border-radius:8px; margin:20px 0;">
+                <p style="font-weight:bold; color:#a33188;">Πώς να το εφαρμόσεις:</p>
+                <ul style="color:#333; line-height:1.8;">
+                  <li>Όρισε threshold για κάθε προϊόν (π.χ. 3 τεμάχια) - τα fast-moving items χρειάζονται μεγαλύτερο buffer από τα slow-movers</li>
+                  <li>Δημιούργησε automation rule - "IF stock ≤ threshold THEN set visibility = hidden" στο eCommerce platform και τα XML feeds σου</li>
+                  <li>Πρόσθεσε notifications - λάβε email ή Slack alert όταν κρυφτεί ένα προϊόν ώστε να ξέρεις ότι πρέπει να παραγγείλεις νέο stock</li>
+                </ul>
+              </div>
+
+              <!-- CTA Button -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding:20px 0;">
+                    <a href="https://obstechnologies.gr/advent/day-6" style="background:linear-gradient(135deg, #a33188 0%, #4a92c9 100%); color:#ffffff; padding:16px 32px; text-decoration:none; border-radius:8px; font-weight:bold; display:inline-block;">
+                      Διάβασε περισσότερα →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Tomorrow Teaser -->
+          <tr>
+            <td style="background:#f0f0f0; padding:20px; text-align:center;">
+              <p style="color:#666; margin:0;">
+                <strong>Αύριο:</strong> AI που οργανώνει τις κατηγορίες σου - Καλύτερο SEO + καλύτερη εμπειρία χρήστη
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:20px; text-align:center; border-radius:0 0 16px 16px;">
+              <p style="color:#999; font-size:12px;">
+                © 2024 OBS Technologies<br>
+                <a href="{{unsubscribe_url}}" style="color:#a33188;">Διαγραφή από τη λίστα</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

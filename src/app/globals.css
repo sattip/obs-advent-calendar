@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0e27;
+  --foreground: #fffafa;
+
+  /* OBS Brand Colors */
+  --obs-purple: #a33188;
+  --obs-blue: #4a92c9;
+  --obs-blue-light: #9fdcf7;
+  --obs-teal: #68bae5;
+  --obs-green: #30e070;
+
+  /* Christmas Colors */
+  --christmas-red: #c41e3a;
+  --christmas-gold: #ffd700;
+  --christmas-snow: #fffafa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0e27;
+    --foreground: #fffafa;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: linear-gradient(
+    135deg,
+    #0a0e27 0%,
+    #1a1f3a 25%,
+    #2a1f3f 50%,
+    #1a1f3a 75%,
+    #0a0e27 100%
+  );
+  background-attachment: fixed;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Snow Animation */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.snowflake {
+  position: fixed;
+  top: -10px;
+  z-index: 9999;
+  user-select: none;
+  cursor: default;
+  animation: snowfall linear infinite;
+  color: var(--christmas-snow);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+/* Twinkle Animation */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+}
+
+.twinkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+/* Door Shake Animation */
+@keyframes doorshake {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: rotate(-2deg);
+  }
+  20%, 40%, 60%, 80% {
+    transform: rotate(2deg);
+  }
+}
+
+.door-shake {
+  animation: doorshake 0.5s ease-in-out;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--obs-purple) 0%,
+    var(--obs-blue) 50%,
+    var(--obs-teal) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.christmas-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--christmas-red) 0%,
+    var(--christmas-gold) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 14, 39, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    135deg,
+    var(--obs-purple),
+    var(--obs-blue)
+  );
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    135deg,
+    var(--obs-blue),
+    var(--obs-teal)
+  );
+}
+
+/* Glass Morphism Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
