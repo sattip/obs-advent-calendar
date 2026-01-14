@@ -1,0 +1,132 @@
+name: Build WordPress Plugin
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main, master, develop ]
+  push:
+    branches: [ main, master, develop ]
+
+jobs:
+  build:
+    name: Build Plugin ZIP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, json, mysqli
+          coverage: none
+
+      - name: Get plugin slug
+        id: plugin-slug
+        run: |
+          # Get repository name as plugin slug
+          SLUG="${GITHUB_REPOSITORY#*/}"
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+          echo "Plugin slug: $SLUG"
+
+      - name: Install Composer dependencies
+        run: |
+          if [ -f composer.json ]; then
+            echo "Installing Composer dependencies..."
+            composer install --no-dev --optimize-autoloader --no-interaction
+            echo "Dependencies installed successfully"
+          else
+            echo "No composer.json found, skipping Composer install"
+          fi
+
+      - name: Create plugin ZIP
+        run: |
+          SLUG="${{ steps.plugin-slug.outputs.slug }}"
+
+          # Create temporary directory
+          mkdir -p /tmp/build
+
+          # Copy all files except dev files and git files
+          rsync -av --exclude='.git' \
+                    --exclude='.github' \
+                    --exclude='node_modules' \
+                    --exclude='.env' \
+                    --exclude='.env.*' \
+                    --exclude='tests' \
+                    --exclude='phpunit.xml' \
+                    --exclude='phpunit.xml.dist' \
+                    --exclude='.phpunit.result.cache' \
+                    --exclude='composer.lock' \
+                    --exclude='package.json' \
+                    --exclude='package-lock.json' \
+                    --exclude='webpack.config.js' \
+                    --exclude='.editorconfig' \
+                    --exclude='.gitignore' \
+                    --exclude='.gitattributes' \
+                    ./ /tmp/build/$SLUG/
+
+          # Create ZIP
+          cd /tmp/build
+          zip -r $SLUG.zip $SLUG/
+
+          # Move ZIP to workspace
+          mv $SLUG.zip $GITHUB_WORKSPACE/
+
+          echo "✓ Created $SLUG.zip"
+          ls -lh $GITHUB_WORKSPACE/$SLUG.zip
+
+      - name: Upload plugin ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.plugin-slug.outputs.slug }}
+          path: ${{ steps.plugin-slug.outputs.slug }}.zip
+          retention-days: 30
+
+      - name: Comment on PR with download link
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const slug = '${{ steps.plugin-slug.outputs.slug }}';
+            const runId = context.runId;
+            const repo = context.repo;
+
+            // Get file size
+            const stats = fs.statSync(`${slug}.zip`);
+            const fileSizeInMB = (stats.size / (1024*1024)).toFixed(2);
+
+            const comment = `## 📦 WordPress Plugin Build Ready
+
+            A production-ready version of this plugin has been built and is ready for testing!
+
+            ### Download & Install
+
+            **[⬇️ Download ${slug}.zip (${fileSizeInMB} MB)](https://github.com/${repo.owner}/${repo.repo}/actions/runs/${runId})**
+
+            #### Installation Steps:
+            1. Click the download link above
+            2. Scroll down to "Artifacts" section
+            3. Download the ZIP file
+            4. In WordPress admin, go to **Plugins → Add New → Upload Plugin**
+            5. Choose the downloaded ZIP file
+            6. Click "Install Now"
+            7. Activate the plugin
+
+            #### What's included:
+            ✅ All plugin files
+            ✅ Composer dependencies (vendor/)
+            ✅ Optimized for production
+            ✅ Ready to install in WordPress
+
+            ---
+            🤖 *Built automatically by Claude Code*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: repo.owner,
+              repo: repo.repo,
+              body: comment
+            });
