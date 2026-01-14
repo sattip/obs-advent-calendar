@@ -23,6 +23,11 @@ jobs:
           extensions: mbstring, xml, ctype, json, mysqli
           coverage: none
 
+      - name: Configure Git for Composer
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
       - name: Get plugin slug
         id: plugin-slug
         run: |
